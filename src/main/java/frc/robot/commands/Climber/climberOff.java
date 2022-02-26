@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberOff extends CommandBase {
-  ClimberSubsytem m_ClimberSubsytem;
+  ClimberSubsystem m_ClimberSubsytem;
   /** Creates a new ClimberOff. */
-  public ClimberOff() {
+  public ClimberOff(ClimberSubsystem ClimberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
