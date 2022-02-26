@@ -4,8 +4,8 @@ import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.CommandXboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SwerveXPattern;
-import frc.robot.commands.Climber.climberDown;
-import frc.robot.commands.Climber.climberUp;
+import frc.robot.commands.Climber.ClimberDown;
+import frc.robot.commands.Climber.ClimberUp;
 import frc.robot.commands.Indexer.FeedShooter;
 import frc.robot.commands.Indexer.IndexBalls;
 import frc.robot.commands.Indexer.IndexerUnjam;
@@ -18,6 +18,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.climberSubsystem;
 import frc.robot.subsystems.climberSubsytem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -32,8 +33,8 @@ public class RobotContainer {
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
  private final climberSubsytem m_climber = new climberSubsytem();
  
-        private final climberDown climberDown = new climberDown(m_climber);
-    private final climberUp climberUp = new climberUp(m_climber);
+        private final ClimberDown climberDown = new ClimberDown(m_climber);
+    private final ClimberUp climberUp = new ClimberUp(m_climber);
     private final StowIntake stowIntake = new StowIntake(m_intake);
     private final ShooterRunAtVelocity shooterIdle = new ShooterRunAtVelocity(m_shooter);
     private final IndexBalls indexBalls = new IndexBalls(m_indexer);
@@ -86,7 +87,10 @@ public class RobotContainer {
                 .whileHeld(feedShooter);
         new Button(oliviaController::getAButton)
                 .whileHeld(deployIntake);
-        
+        new Button(oliviaController::getLeftBumper)
+                .whileHeld(climberDown);
+        new Button(oliviaController::getRightBumper)
+                .whileHeld(climberUp);
 
             
         
