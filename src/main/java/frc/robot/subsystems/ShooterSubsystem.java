@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 // 2800
-//
+//2850
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -63,7 +63,8 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopTalon.getSelectedSensorVelocity();
     return velocity;
   }
-
+// top: 2800 x 3.57
+// bottom 2850 x 3.57
 
 
   public void shootStop(){

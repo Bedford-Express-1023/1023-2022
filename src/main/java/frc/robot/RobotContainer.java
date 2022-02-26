@@ -4,6 +4,8 @@ import frc.robot.Utils.AxisButton;
 import frc.robot.Utils.CommandXboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SwerveXPattern;
+import frc.robot.commands.Climber.climberDown;
+import frc.robot.commands.Climber.climberUp;
 import frc.robot.commands.Indexer.FeedShooter;
 import frc.robot.commands.Indexer.IndexBalls;
 import frc.robot.commands.Indexer.IndexerUnjam;
@@ -16,6 +18,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.climberSubsytem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,13 +30,18 @@ public class RobotContainer {
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-
+ private final climberSubsytem m_climber = new climberSubsytem();
+ 
+        private final climberDown climberDown = new climberDown(m_climber);
+    private final climberUp climberUp = new climberUp(m_climber);
     private final StowIntake stowIntake = new StowIntake(m_intake);
     private final ShooterRunAtVelocity shooterIdle = new ShooterRunAtVelocity(m_shooter);
     private final IndexBalls indexBalls = new IndexBalls(m_indexer);
     private final FeedShooter feedShooter = new FeedShooter(m_indexer);
     private final IndexerUnjam indexerUnjam = new IndexerUnjam(m_indexer);
     private final DeployIntake deployIntake = new DeployIntake(m_intake);
+
+    
 
     private final XboxController brendanController = new XboxController(0);
     private final XboxController oliviaController = new XboxController(1);
@@ -78,6 +86,9 @@ public class RobotContainer {
                 .whileHeld(feedShooter);
         new Button(oliviaController::getAButton)
                 .whileHeld(deployIntake);
+        
+
+            
         
     }
 
