@@ -18,8 +18,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.climberSubsystem;
-import frc.robot.subsystems.climberSubsytem;
+import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,7 +30,7 @@ public class RobotContainer {
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
- private final climberSubsytem m_climber = new climberSubsytem();
+ private final ClimberSubsystem m_climber = new ClimberSubsystem();
  
         private final ClimberDown climberDown = new ClimberDown(m_climber);
     private final ClimberUp climberUp = new ClimberUp(m_climber);
