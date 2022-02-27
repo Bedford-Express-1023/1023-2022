@@ -5,12 +5,10 @@ import frc.robot.Utils.CommandXboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SwerveXPattern;
 import frc.robot.commands.Climber.ClimberDown;
+import frc.robot.commands.Climber.ClimberRelease;
 import frc.robot.commands.Climber.ClimberUp;
-<<<<<<< Updated upstream
-=======
 //import frc.robot.commands.Climber.ClimberDown;
 //import frc.robot.commands.Climber.ClimberUp;
->>>>>>> Stashed changes
 import frc.robot.commands.Indexer.FeedShooter;
 import frc.robot.commands.Indexer.IndexBalls;
 import frc.robot.commands.Indexer.IndexerUnjam;
@@ -23,33 +21,26 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-<<<<<<< Updated upstream
-import frc.robot.subsystems.ClimberSubsystem;
-=======
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.ClimberSubsytem;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 public class RobotContainer {
     private final SwerveDriveSubsystem m_drivetrain = new SwerveDriveSubsystem();
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
- private final ClimberSubsystem m_climber = new ClimberSubsystem();
-<<<<<<< Updated upstream
- 
-        private final ClimberDown climberDown = new ClimberDown(m_climber);
-=======
- private final CameraSubsystem m_camera = new CameraSubsystem();
- private final ClimberDown climberDown = new ClimberDown(m_climber);
->>>>>>> Stashed changes
+    private final ClimberSubsystem m_climber = new ClimberSubsystem();
+    private final CameraSubsystem m_camera = new CameraSubsystem();
+    private final ClimberDown climberDown = new ClimberDown(m_climber);
     private final ClimberUp climberUp = new ClimberUp(m_climber);
+    private final ClimberRelease climberRelease = new ClimberRelease(m_climber);
     private final StowIntake stowIntake = new StowIntake(m_intake);
     private final ShooterRunAtVelocity shooterIdle = new ShooterRunAtVelocity(m_shooter);
     private final IndexBalls indexBalls = new IndexBalls(m_indexer);
@@ -103,17 +94,13 @@ public class RobotContainer {
         new Button(oliviaController::getAButton)
                 .whileHeld(deployIntake);
         new Button(oliviaController::getLeftBumper)
-<<<<<<< Updated upstream
-                .whileHeld(climberDown);
-        new Button(oliviaController::getRightBumper)
-                .whileHeld(climberUp);
-
-            
-=======
                 .whenHeld(climberUp);
         new Button(oliviaController::getRightBumper)
                 .whenHeld(climberDown);
->>>>>>> Stashed changes
+        new Button(oliviaController::getYButton)
+                .whenHeld(climberUp);
+        new POVButton(oliviaController, 0)
+                .whenHeld(climberRelease);
         
     }
 

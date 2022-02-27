@@ -7,16 +7,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberSubsystem extends SubsystemBase {
-<<<<<<< Updated upstream:src/main/java/frc/robot/subsystems/climberSubsystem.java
-public final WPI_TalonFX climberMotor = new WPI_TalonFX(67);
-  /** Creates a new climberSubsystem. */
-=======
-  public final WPI_TalonFX climberMotor = new WPI_TalonFX(71);
+  private final WPI_TalonFX climberMotor = new WPI_TalonFX(71);
+  private final Solenoid climberSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 2);
   /** Creates a new climberSubsytem. */
->>>>>>> Stashed changes:src/main/java/frc/robot/subsystems/ClimberSubsystem.java
   public ClimberSubsystem() {}
 
   @Override
@@ -30,9 +28,15 @@ public final WPI_TalonFX climberMotor = new WPI_TalonFX(67);
 
   public void climberDown(){
     climberMotor.set(ControlMode.PercentOutput, -0.5);
+    climberSolenoid.set(true);
+  }
+
+  public void climberRelease(){
+    climberSolenoid.set(true);
   }
 
   public void climberOff(){
     climberMotor.stopMotor();
+    climberSolenoid.set(false);
   }
 }

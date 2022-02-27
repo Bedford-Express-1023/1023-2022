@@ -9,15 +9,10 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberOff extends CommandBase {
   ClimberSubsystem m_ClimberSubsytem;
-<<<<<<< Updated upstream
-  /** Creates a new ClimberOff. */
-  public ClimberOff(ClimberSubsystem ClimberSubsystem) {
-=======
   /** Creates a new climberOff. */
   public ClimberOff(ClimberSubsystem climberSubsytem) {
     m_ClimberSubsytem = climberSubsytem;
     addRequirements(m_ClimberSubsytem);
->>>>>>> Stashed changes
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

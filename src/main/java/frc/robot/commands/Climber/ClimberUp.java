@@ -8,17 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberUp extends CommandBase {
-<<<<<<< Updated upstream:src/main/java/frc/robot/commands/Climber/ClimberUp.java
-  /** Creates a new ClimberUp. 
- * @param m_climber*/
-  public ClimberUp(ClimberSubsystem m_climber) {
-=======
   ClimberSubsystem m_ClimberSubsytem;
   /** Creates a new climberUp. */
   public ClimberUp(ClimberSubsystem climberSubsytem) {
     m_ClimberSubsytem = climberSubsytem;
     addRequirements(m_ClimberSubsytem);
->>>>>>> Stashed changes:src/main/java/frc/robot/commands/Climber/climberUp.java
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
