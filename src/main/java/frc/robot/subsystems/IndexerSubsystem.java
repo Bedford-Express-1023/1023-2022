@@ -14,10 +14,10 @@ public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax indexerTopMotor = new CANSparkMax(31, MotorType.kBrushless); //FIXME
   private final CANSparkMax indexerFrontMotor = new CANSparkMax(30, MotorType.kBrushless); //FIXME
   private final CANSparkMax indexerBackMotor = new CANSparkMax(32, MotorType.kBrushless); //FIXME
-
   private final DigitalInput indexerBeamBreak = new DigitalInput(9);
   private final DigitalInput shooterBeamBreak = new DigitalInput(8); //FIXME
   //private final DigitalInput indexerBeamBreak = new DigitalInput(2);
+
   private final double indexingSpeed = 0.9;
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {

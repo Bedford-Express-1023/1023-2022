@@ -5,6 +5,7 @@
 package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberOff extends CommandBase {
@@ -24,7 +25,6 @@ public class ClimberOff extends CommandBase {
   @Override
   public void execute() {
     m_ClimberSubsytem.climberOff();
-
   }
 
   // Called once the command ends or is interrupted.

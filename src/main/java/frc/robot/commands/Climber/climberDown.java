@@ -2,22 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Shooter;
+package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsytem;
 
-public class ShooterRunAtVelocity extends CommandBase {
-  ShooterSubsystem m_ShooterSubsystem;
-  double shooterRPM = (3000 * 3.33); 
-  int shooterLowClicks = 10000;
-  int shooterHighClicks = 10000;
-  /** Creates a new shootClose. */
-  public ShooterRunAtVelocity(ShooterSubsystem shooterSubsystem) {
-    m_ShooterSubsystem = shooterSubsystem;
-    addRequirements(m_ShooterSubsystem);
+public class ClimberDown extends CommandBase {
+  ClimberSubsytem m_ClimberSubsytem;
+  /** Creates a new climberDown. */
+  public ClimberDown(ClimberSubsytem climberSubsytem) {
+    addRequirements(m_ClimberSubsytem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,12 +22,13 @@ public class ShooterRunAtVelocity extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_ShooterSubsystem.shooterRunAtVelocity(9818, 10710);
+    m_ClimberSubsytem.climberDown();
   }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_ShooterSubsystem.shootStop();
+    m_ClimberSubsytem.climberOff();
   }
 
   // Returns true when the command should end.

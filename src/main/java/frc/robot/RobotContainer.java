@@ -7,6 +7,7 @@ import frc.robot.commands.SwerveXPattern;
 import frc.robot.commands.Climber.ClimberDown;
 import frc.robot.commands.Climber.ClimberRelease;
 import frc.robot.commands.Climber.ClimberUp;
+
 //import frc.robot.commands.Climber.ClimberDown;
 //import frc.robot.commands.Climber.ClimberUp;
 import frc.robot.commands.Indexer.FeedShooter;
@@ -22,7 +23,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
+
 import frc.robot.subsystems.ClimberSubsystem;
+
 //import frc.robot.subsystems.ClimberSubsytem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -30,6 +33,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.util.WPIUtilJNI;
+
 
 public class RobotContainer {
     private final SwerveDriveSubsystem m_drivetrain = new SwerveDriveSubsystem();
@@ -47,11 +53,17 @@ public class RobotContainer {
     private final FeedShooter feedShooter = new FeedShooter(m_indexer);
     private final IndexerUnjam indexerUnjam = new IndexerUnjam(m_indexer);
     private final DeployIntake deployIntake = new DeployIntake(m_intake);
+    private final SwerveXPattern swerveXPattern = new SwerveXPattern(m_drivetrain);
 
     
 
     private final XboxController brendanController = new XboxController(0);
     private final XboxController oliviaController = new XboxController(1);
+    private double slewDouble = 3.0;
+
+    private final SlewRateLimiter brendanControllerLeftY = new SlewRateLimiter(slewDouble);
+    private final SlewRateLimiter brendanControllerLeftX = new SlewRateLimiter(slewDouble);
+    private final SlewRateLimiter brendanControllerRightX = new SlewRateLimiter(slewDouble);
 
     public RobotContainer() {
         m_drivetrain.register();
@@ -59,39 +71,37 @@ public class RobotContainer {
         m_shooter.register();
         m_indexer.register();
 
-        m_drivetrain.setDefaultCommand(new DriveCommand(
+        /*m_drivetrain.setDefaultCommand(new DriveCommand(
                 m_drivetrain,
-                () -> -modifyAxis(brendanController.getLeftY()), // Axes are flipped here on purpose
-                () -> -modifyAxis(brendanController.getLeftX()),
-                () -> -modifyAxis(brendanController.getRightX()),
+                () -> -modifyAxis(brendanControllerLeftY.calculate(brendanController.getLeftY())), // Axes are flipped here on purpose
+                () -> -modifyAxis(brendanControllerLeftX.calculate(brendanController.getLeftX())),
+                () -> -modifyAxis(brendanControllerRightX.calculate(brendanController.getRightX())),
                 () -> brendanController.getLeftBumper(),
-                () -> brendanController.getRightBumper()
+                () -> brendanController.getRightBumper(),
+                () -> brendanController.getLeftTriggerAxis() > 0.5
         ));
-
+        
+        /*
         m_intake.setDefaultCommand(stowIntake);
         m_shooter.setDefaultCommand(shooterIdle);
-        m_indexer.setDefaultCommand(indexBalls);
+        m_indexer.setDefaultCommand(indexBalls);*/
     
+        m_shooter.setDefaultCommand(shooterIdle);
 
-            //Taken buttons: Left Stick, Right Stick, left stick button, right bumper, left bumper, X
-        new Button(brendanController::getLeftStickButtonPressed)
+        new Button(brendanController::getBButtonPressed)
                 .whenPressed(m_drivetrain::zeroGyroscope);
         new Button(brendanController::getXButton)
-                .whenPressed(new SwerveXPattern(m_drivetrain));
+                .whileHeld(swerveXPattern);
         new Button(brendanController::getAButton)
                 .whileHeld(deployIntake);
-        
-        /*new Button(oliviaController.getAButton())
-                .whileHeld(new DeployIntake(m_intake));
-        new Button(oliviaController.getBButton())
-                .whileHeld(new UnjamIntake(m_intake));
-        new Button(oliviaController.getYButton())
-                .whileHeld(new FeedShooter(m_indexer));*/
+     
         new Button(oliviaController::getXButton)
                 .whileHeld(indexerUnjam);
-        new Button(oliviaController::getYButton)
+        new Button(() -> oliviaController.getLeftTriggerAxis() > 0.5) //done differently because the triggers return 0-1 instead of a boolean
                 .whileHeld(feedShooter);
-        new Button(oliviaController::getAButton)
+        new Button(() -> oliviaController.getLeftTriggerAxis() > 0.5)
+                .whenReleased(indexBalls);
+        new Button(oliviaController::getBButton)
                 .whileHeld(deployIntake);
         new Button(oliviaController::getLeftBumper)
                 .whenHeld(climberUp);
@@ -100,12 +110,7 @@ public class RobotContainer {
         new Button(oliviaController::getYButton)
                 .whenHeld(climberUp);
         new POVButton(oliviaController, 0)
-                .whenHeld(climberRelease);
-        
-    }
-
-    public SwerveDriveSubsystem getDrivetrain() {
-        return m_drivetrain;
+                .whenHeld(climberRelease);        
     }
 
     private static double deadband(double value, double deadband) {
@@ -129,4 +134,5 @@ public class RobotContainer {
 
         return value;
     }
+    
 }
