@@ -16,7 +16,7 @@ public class ShootAtLaunchpad extends CommandBase {
   HoodSubsystem m_HoodSubsystem;
   IndexerSubsystem m_IndexerSubsystem;
   SwerveDriveSubsystem m_SwerveDriveSubsystem;
-  PointTowardsHub pointTowardsHub = new PointTowardsHub(m_SwerveDriveSubsystem);
+  PointTowardsHub pointTowardsHub = new PointTowardsHub(m_SwerveDriveSubsystem, (() -> 0), (() -> 0 ));
   /** Creates a new ShootAtLaunchpad. */
   public ShootAtLaunchpad(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
     m_ShooterSubsystem = shooterSubsystem;

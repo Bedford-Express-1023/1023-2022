@@ -80,7 +80,7 @@ public class RobotContainer {
     private final ShootOneAndDriveBack shootOneAndDriveBack = new ShootOneAndDriveBack(m_drivetrain, m_indexer, m_shooter);
     private final ShootOneDriveBackAndGetOne shootOneDriveBackAndGetOne = new ShootOneDriveBackAndGetOne(
                         m_drivetrain, m_indexer, m_shooter, m_intake);
-    private final PointTowardsHub pointTowardsHub = new PointTowardsHub(m_drivetrain);
+    private PointTowardsHub pointTowardsHub; 
     private final Command gyroscope180 = new Gyroscope180(m_drivetrain);
 
     private final XboxController brendanController = new XboxController(0);
@@ -117,7 +117,7 @@ public class RobotContainer {
         autoDelay.addOption("9.0", new WaitCommand(9.0));
         autoDelay.addOption("10.0", new WaitCommand(10.0));
         SmartDashboard.putData(autoDelay);
-
+        
         m_drivetrain.setDefaultCommand(new DriveCommand(
                 m_drivetrain,
                 () -> -modifyAxis(brendanController.getLeftY()), // Axes are flipped here on purpose
@@ -137,9 +137,10 @@ public class RobotContainer {
                 .whenPressed(m_drivetrain::zeroGyroscope);
         new Button(brendanController::getXButton)
                 .whileHeld(swerveXPattern);
-        new Button(brendanController::getAButton)
+        new Button(brendanController::getAButton) 
                 .whileHeld(pointTowardsHub);
                 //low goal dump on Y
+        pointTowardsHub = new PointTowardsHub(m_drivetrain, brendanController::getLeftY, brendanController::getLeftX);
      
         new Button(oliviaController::getXButton)
                 .whileHeld(indexerUnjam);

@@ -33,7 +33,7 @@ public class Testing extends SequentialCommandGroup {
     addCommands(
       new DriveBackFromTarmac(drivetrain).alongWith(
           new DeployIntake(intakeSubsystem).withTimeout(2.0)), 
-      new PointTowardsHub(drivetrain)/*.alongWith(
+      new PointTowardsHub(drivetrain, ( ()->0 ), ( ()->0 ) )/*.alongWith(
           new ShootAtTarmac(m_shooter, m_hood, m_indexer))*/);
   }
 }
