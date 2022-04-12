@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class PointTowardsHub extends CommandBase {
@@ -25,7 +24,7 @@ public class PointTowardsHub extends CommandBase {
     }
     @Override
     public void initialize() {
-        LimeLightRotationPID = new PIDController(3, 0, 0);
+        LimeLightRotationPID = new PIDController(6.5, 0.0, 0.005);
         LimeLightRotationPID.enableContinuousInput(-Math.PI, Math.PI);
     }
 
@@ -35,6 +34,10 @@ public class PointTowardsHub extends CommandBase {
         if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
             double toRotate = LimeLightRotationPID.calculate(0, -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * Math.PI/180);
             drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(fBAxis.getAsDouble() * Constants.MAX_VELOCITY_METERS_PER_SECOND, rLAxis.getAsDouble() * Constants.MAX_VELOCITY_METERS_PER_SECOND, toRotate + 0.1 * Math.signum(toRotate), drivetrain.getRotation()));
+        }
+
+        if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) > -1.5 && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) < 1.5 ) {
+            drivetrain.drive(new ChassisSpeeds(0.0, 0.0, 0.0));  
         }
     }
 

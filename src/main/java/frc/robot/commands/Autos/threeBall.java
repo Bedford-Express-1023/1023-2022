@@ -7,6 +7,7 @@ package frc.robot.commands.Autos;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.PointTowardsHub;
 import frc.robot.commands.Intake.DeployIntake;
+import frc.robot.commands.Shooter.AutoShootCommand;
 import frc.robot.commands.Shooter.ShootAtTarmac;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -17,22 +18,15 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Testing extends SequentialCommandGroup {
-  /** Creates a new TwoBallAtTarmac. */
-  SwerveDriveSubsystem m_drivetrain;
-  IntakeSubsystem intakeSubsystem;
-  public Testing(SwerveDriveSubsystem drivetrain,
-      IntakeSubsystem intakeSubsystem, 
-      ShooterSubsystem m_shooter, 
-      HoodSubsystem m_hood, 
-      IndexerSubsystem m_indexer) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-
+public class threeBall extends SequentialCommandGroup {
+  /** Creates a new fiveBall. */
+  public threeBall(IntakeSubsystem intake, IndexerSubsystem indexer, SwerveDriveSubsystem drivetrain, 
+        ShooterSubsystem shooter, HoodSubsystem hood) {
     addCommands(
-      new DriveBackFromTarmac(drivetrain).alongWith(
-          new DeployIntake(intakeSubsystem).withTimeout(2.0)), 
-      new PointTowardsHub(drivetrain, ( ()->0 ), ( ()->0 ) )/*.alongWith(
-          new ShootAtTarmac(m_shooter, m_hood, m_indexer))*/);
+      new threeBall1(drivetrain).deadlineWith(
+        new DeployIntake(intake)), 
+      new AutoShootCommand(hood, shooter, indexer).withTimeout(3).deadlineWith(
+        new PointTowardsHub(drivetrain), 
+        new DeployIntake(intake).withTimeout(2)));
   }
 }

@@ -7,12 +7,12 @@ package frc.robot.commands.Indexer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerSubsystem;
 
-public class FeedShooter extends CommandBase {
-  IndexerSubsystem m_IndexerSubsystem;
-  /** Creates a new FeedShooter. */
-  public FeedShooter(IndexerSubsystem m_indexer) {
-    m_IndexerSubsystem = m_indexer;
+public class ColorSorter extends CommandBase {
+  IndexerSubsystem  m_IndexerSubsystem;
+  /** Creates a new ColorSorter. */
+  public ColorSorter(IndexerSubsystem indexerSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_IndexerSubsystem = indexerSubsystem;
     addRequirements(m_IndexerSubsystem);
   }
 
@@ -23,14 +23,18 @@ public class FeedShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_IndexerSubsystem.feedShooter();
+    //m_IndexerSubsystem.ballSorter();
+
+   //m_IndexerSubsystem.getColor();
+
+   
+
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_IndexerSubsystem.indexBalls();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

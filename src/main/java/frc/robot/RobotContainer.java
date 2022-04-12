@@ -1,49 +1,43 @@
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.Gyroscope180;
 import frc.robot.commands.PointTowardsHub;
 
-import frc.robot.commands.SwerveXPattern;
 import frc.robot.commands.Autos.DoNothing;
-import frc.robot.commands.Autos.DriveBack;
-import frc.robot.commands.Autos.DriveBackFromTarmac;
-import frc.robot.commands.Autos.ShootAndDoNothing;
-import frc.robot.commands.Autos.ShootOnce;
-import frc.robot.commands.Autos.ShootOneAndDriveBack;
-import frc.robot.commands.Autos.ShootOneDriveBackAndGetOne;
-import frc.robot.commands.Autos.Turn90;
 import frc.robot.commands.Autos.TwoBallAtTarmac;
+import frc.robot.commands.Autos.fourBall;
+import frc.robot.commands.Autos.threeBall;
 import frc.robot.commands.Climber.ClimbLock;
 import frc.robot.commands.Climber.ClimbStop;
 import frc.robot.commands.Climber.ClimbUp;
 import frc.robot.commands.Climber.ClimberUnlock;
 import frc.robot.commands.Indexer.BallSpitter;
-import frc.robot.commands.Indexer.BallSpitterStop;
-import frc.robot.commands.Indexer.IndexBalls;
-import frc.robot.commands.Indexer.IndexerUnjam;
+import frc.robot.commands.Indexer.FeedShooter;
+import frc.robot.commands.Indexer.StupidIndexer;
+import frc.robot.commands.Indexer.IndexerStop;
+//import frc.robot.commands.Indexer.ReactToColor;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StowIntake;
-import frc.robot.commands.Intake.UnjamIntake;
-import frc.robot.commands.Shooter.ShootAtFender;
-import frc.robot.commands.Shooter.ShootAtLaunchpad;
-import frc.robot.commands.Shooter.ShootAtTarmac;
+import frc.robot.commands.Shooter.AutoShootCommand;
+import frc.robot.commands.Shooter.HoodReturnToZero;
+import frc.robot.commands.Shooter.SetHoodPositionAuto;
 import frc.robot.commands.Shooter.ShootStop;
+import frc.robot.commands.Shooter.ShooterTuningCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class RobotContainer {
     private final SwerveDriveSubsystem m_drivetrain = new SwerveDriveSubsystem();
@@ -54,38 +48,34 @@ public class RobotContainer {
     private final ClimberSubsystem m_climber = new ClimberSubsystem();
     public final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
     public final SendableChooser<Command> autoDelay = new SendableChooser<Command>();
+    public final SendableChooser<Command> teamColorChooser = new SendableChooser<Command>();
  
     private final ClimbUp climbUp = new ClimbUp(m_climber);
+    
     private final ClimbStop climbStop = new ClimbStop(m_climber);
     private final ClimberUnlock climberUnlock = new ClimberUnlock(m_climber);
     private final ClimbLock climberLock = new ClimbLock(m_climber);
-    private final ShootAtFender shootAtFender = new ShootAtFender(m_shooter, m_hood, m_indexer);
-    private final ShootAtTarmac shootAtTarmac = new ShootAtTarmac(m_shooter, m_hood, m_indexer);
-    private final ShootAtLaunchpad shootAtLaunchpad = new ShootAtLaunchpad(m_shooter, m_hood, m_indexer);
     private final TwoBallAtTarmac twoBallAtTarmac = new TwoBallAtTarmac(m_drivetrain, m_intake, m_shooter, m_hood, m_indexer);
-
+    private final HoodReturnToZero hoodReturnToZero = new HoodReturnToZero(m_hood);
     private final StowIntake stowIntake = new StowIntake(m_intake);
-    private final IndexBalls indexBalls = new IndexBalls(m_indexer);
-    private final IndexerUnjam indexerUnjam = new IndexerUnjam(m_indexer);
     private final BallSpitter ballSpitter = new BallSpitter(m_indexer);
-    private final BallSpitterStop ballSpitterStop = new BallSpitterStop(m_indexer);
     private final DeployIntake deployIntake = new DeployIntake(m_intake);
-    private final UnjamIntake unjamIntake = new UnjamIntake(m_intake);
-    private final SwerveXPattern swerveXPattern = new SwerveXPattern(m_drivetrain);
+    private final AutoShootCommand autoShootCommand = new AutoShootCommand(m_hood, m_shooter, m_indexer);
     private final ShootStop shootStop = new ShootStop(m_shooter);
-    private final DriveBack driveBack= new DriveBack(m_drivetrain);
+    private final SetHoodPositionAuto setHoodPositionAuto = new SetHoodPositionAuto(m_hood);
     private final DoNothing doNothing = new DoNothing();
-    private final ShootOnce shootOnce = new ShootOnce(m_indexer, null, m_shooter);
-    private final ShootAndDoNothing shootAndDoNothing = new ShootAndDoNothing(m_shooter, m_hood, m_indexer);
-    private final ShootOneAndDriveBack shootOneAndDriveBack = new ShootOneAndDriveBack(m_drivetrain, m_indexer, m_shooter);
-    private final ShootOneDriveBackAndGetOne shootOneDriveBackAndGetOne = new ShootOneDriveBackAndGetOne(
-                        m_drivetrain, m_indexer, m_shooter, m_intake);
     private PointTowardsHub pointTowardsHub; 
     private final Command gyroscope180 = new Gyroscope180(m_drivetrain);
-
+    private final IndexerStop indexerStop = new IndexerStop(m_indexer);
+    private final PointTowardsHub pointTowardsHub = new PointTowardsHub(m_drivetrain);
+   // private final ReactToColor reactToColor = new ReactToColor(m_indexer);
+    private final ShooterTuningCommand shooterTuningCommand = new ShooterTuningCommand(m_shooter, m_hood);
+    private final StupidIndexer stupidIndexer = new StupidIndexer(m_indexer);
+    private final FeedShooter feedShooter = new FeedShooter(m_indexer);
     private final XboxController brendanController = new XboxController(0);
     private final XboxController oliviaController = new XboxController(1);
-    private final XboxController programmingController = new XboxController(2);
+
+
     
     public RobotContainer() {
         m_drivetrain.register();
@@ -93,18 +83,17 @@ public class RobotContainer {
         m_shooter.register();
         m_indexer.register();
         m_climber.register();
+        m_hood.register();
+
+        CameraServer.startAutomaticCapture(0);
 
         autoChooser.setDefaultOption("Do Nothing", doNothing);
-        autoChooser.addOption("Drive Back", driveBack);
-        autoChooser.addOption("Shoot Once and Do Nothing", shootAndDoNothing);
-        autoChooser.addOption("Shoot Once and Drive Back", shootOneAndDriveBack);
-        autoChooser.addOption("Shoot Once", shootOnce);
-        autoChooser.addOption("2-Ball", shootOneDriveBackAndGetOne);
-        autoChooser.addOption("2-ball drive back test", twoBallAtTarmac);
-        autoChooser.addOption("turn90", new Turn90(m_drivetrain));
+        autoChooser.addOption("2-ball", twoBallAtTarmac);
+        autoChooser.addOption("3-ball", new threeBall(m_intake, m_indexer, m_drivetrain, m_shooter, m_hood));
+        autoChooser.addOption("4-ball", new fourBall(m_intake, m_indexer, m_drivetrain, m_shooter, m_hood));
 
         SmartDashboard.putData(autoChooser);
-       
+
         autoDelay.setDefaultOption("none", new WaitCommand(0.0));
         autoDelay.addOption("1.0", new WaitCommand(1.0));
         autoDelay.addOption("2.0", new WaitCommand(2.0));
@@ -123,16 +112,18 @@ public class RobotContainer {
                 () -> -modifyAxis(brendanController.getLeftY()), // Axes are flipped here on purpose
                 () -> -modifyAxis(brendanController.getLeftX()),
                 () -> -modifyAxis(brendanController.getRightX()),
-                () -> false, //brendanController.getLeftBumper(), //RobotCentric
-                () -> brendanController.getLeftBumper(), //lowPower
+                () -> brendanController.getLeftBumper(), //RobotCentric
+                () -> brendanController.getRightBumper(), //lowPower
                 () -> !(brendanController.getLeftTriggerAxis() > 0.5) //slowTurn
         ));
         
         m_intake.setDefaultCommand(stowIntake);
-        m_indexer.setDefaultCommand(indexBalls);
+        m_indexer.setDefaultCommand(stupidIndexer);
         m_shooter.setDefaultCommand(shootStop);
         m_climber.setDefaultCommand(climberLock);
-
+        m_hood.setDefaultCommand(setHoodPositionAuto);
+       
+      
         new Button(brendanController::getBButtonPressed)
                 .whenPressed(m_drivetrain::zeroGyroscope);
         new Button(brendanController::getXButton)
@@ -141,48 +132,35 @@ public class RobotContainer {
                 .whileHeld(pointTowardsHub);
                 //low goal dump on Y
         pointTowardsHub = new PointTowardsHub(m_drivetrain, brendanController::getLeftY, brendanController::getLeftX);
-     
         new Button(oliviaController::getXButton)
-                .whileHeld(indexerUnjam);
-        new Button(() -> oliviaController.getLeftTriggerAxis() > 0.5)
-                .whenReleased(indexBalls);
-        new Button(() -> oliviaController.getLeftTriggerAxis() > 0.5)
-                .whenReleased(shootStop);
+                .whileHeld(m_indexer::indexerUnjam);
+        new Button(oliviaController::getXButton)
+                .whileHeld(m_intake::unjamIntake);
         new Button(() -> oliviaController.getRightTriggerAxis() > 0.5)//not tested
                 .whileHeld(ballSpitter);
-        new Button(() -> oliviaController.getRightTriggerAxis() > 0.5)//not tested
-                .whenReleased(ballSpitterStop);
         new Button(oliviaController::getBButton)
                 .whileHeld(deployIntake);
         new POVButton(oliviaController, 0)
                 .whileHeld(climbUp);
         new POVButton(oliviaController, 0)
+                .whileHeld(m_hood::hoodReturnToZero);
+        new POVButton(oliviaController, 0)
                 .whenReleased(climbStop);
         new Button(oliviaController::getStartButton)
                 .toggleWhenPressed(climberUnlock, true);
+        new Button(oliviaController::getStartButton)
+                .whenPressed(hoodReturnToZero);
+        new Button(oliviaController::getStartButton)
+                .whenPressed(indexerStop);
 
-        new POVButton(brendanController, 0)
-                .whileHeld(shootAtFender);
-        new Button(() -> brendanController.getLeftTriggerAxis() > 0.5)
-                .whileHeld(shootAtFender);
-        new Button(() -> brendanController.getLeftTriggerAxis() > 0.5)
-                .whileHeld(pointTowardsHub);
-        new Button(() -> brendanController.getRightBumper())
-                .whileHeld(shootAtLaunchpad);
-        new Button(() -> brendanController.getRightBumper())
-                .whileHeld(pointTowardsHub);
         new Button(() -> brendanController.getRightTriggerAxis() > 0.5)
-                .whileHeld(shootAtTarmac);
+                .whileHeld(autoShootCommand);
+               
+                //.whileHeld(shooterTuningCommand);
         new Button(() -> brendanController.getRightTriggerAxis() > 0.5)
                 .whileHeld(pointTowardsHub);
-        new POVButton(brendanController, 270)
-                .whileHeld(indexerUnjam);
-        /*new Button(brendanController::getBButton)
-                .whileHeld(deployIntake);
-        new Button(programmingController::getXButton)
-                .whileHeld(indexerUnjam);
-        new Button(programmingController::getYButton)
-                .whenPressed(m_hood::hoodPositionReset);*/
+        new Button(() -> brendanController.getLeftTriggerAxis() > 0.5)
+       .whileHeld(feedShooter);
     }
 
     private static double deadband(double value, double deadband) {
