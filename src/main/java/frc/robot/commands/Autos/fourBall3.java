@@ -23,7 +23,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 /** Add your docs here. */
 public class fourBall3 extends PPSwerveControllerCommand {
     public SwerveDriveSubsystem drivetrain;
-    public static final PathPlannerTrajectory trajectory = PathPlanner.loadPath("4 ball 3", 3, 4);
+    public static final PathPlannerTrajectory trajectory = PathPlanner.loadPath("4 ball 3 2", 3, 4);
 
     private fourBall3(PathPlannerTrajectory trajectory, Supplier<Pose2d> pose, SwerveDriveKinematics kinematics,
             PIDController xController, PIDController yController, ProfiledPIDController thetaController,

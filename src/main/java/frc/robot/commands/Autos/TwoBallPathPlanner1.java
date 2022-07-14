@@ -14,23 +14,25 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /** Add your docs here. */
-public class fourBall2 extends PPSwerveControllerCommand {
+public class TwoBallPathPlanner1 extends PPSwerveControllerCommand {
     public SwerveDriveSubsystem drivetrain;
-    public static final PathPlannerTrajectory trajectory = PathPlanner.loadPath("4 ball 2", 2, 4);
+    public static final PathPlannerTrajectory trajectory = PathPlanner.loadPath("2 Ball New", 3, 4);
 
-    private fourBall2(PathPlannerTrajectory trajectory, Supplier<Pose2d> pose, SwerveDriveKinematics kinematics,
+    private TwoBallPathPlanner1(PathPlannerTrajectory trajectory, Supplier<Pose2d> pose, SwerveDriveKinematics kinematics,
             PIDController xController, PIDController yController, ProfiledPIDController thetaController,
             Consumer<SwerveModuleState[]> outputModuleStates, Subsystem[] requirements) {
         super(trajectory, pose, kinematics, xController, yController, thetaController, outputModuleStates, requirements);
     }
-    public fourBall2(SwerveDriveSubsystem drivetrain) {
+    public TwoBallPathPlanner1(SwerveDriveSubsystem drivetrain) {
         super(
             trajectory, 
             drivetrain::getRealOdometry, 
@@ -47,6 +49,18 @@ public class fourBall2 extends PPSwerveControllerCommand {
             }, 
             drivetrain);
             this.drivetrain = drivetrain;
+    }
+    @Override
+    public void initialize() {
+        super.initialize();
+        double centerToWheel = Math.hypot(Constants.DRIVETRAIN_WHEELBASE_METERS / 2, Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+        drivetrain.odometry.resetPosition(
+            new Pose2d(
+                trajectory.getInitialPose().getX(),
+                trajectory.getInitialPose().getY(),
+                trajectory.getInitialPose().getRotation()
+            ),
+            Rotation2d.fromDegrees(drivetrain.gyroscope.getYaw()));
     }
 
     @Override

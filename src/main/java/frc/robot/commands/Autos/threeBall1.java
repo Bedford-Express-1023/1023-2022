@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /** Add your docs here. */
@@ -52,7 +53,14 @@ public class threeBall1 extends PPSwerveControllerCommand {
     @Override
     public void initialize() {
         super.initialize();
-        drivetrain.odometry.resetPosition(trajectory.getInitialPose(), Rotation2d.fromDegrees(drivetrain.gyroscope.getYaw()));
+        double centerToWheel = Math.hypot(Constants.DRIVETRAIN_WHEELBASE_METERS / 2, Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+        drivetrain.odometry.resetPosition(
+            new Pose2d (
+                trajectory.getInitialPose().getX(),
+                trajectory.getInitialPose().getY(),
+                trajectory.getInitialPose().getRotation()
+            ),
+            Rotation2d.fromDegrees(drivetrain.gyroscope.getYaw()));
     }
 
     @Override

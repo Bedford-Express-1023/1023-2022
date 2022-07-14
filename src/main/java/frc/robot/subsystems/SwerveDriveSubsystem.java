@@ -133,18 +133,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
     public void updateOdometry() {
         odometry.update(Rotation2d.fromDegrees(gyroscope.getYaw()),
-                new SwerveModuleState(frontLeftModule.getDriveVelocity()*2.025, new Rotation2d(frontLeftModule.getSteerAngle())),
-                new SwerveModuleState(frontRightModule.getDriveVelocity()*2.025, new Rotation2d(frontRightModule.getSteerAngle())),
-                new SwerveModuleState(backLeftModule.getDriveVelocity()*2.025, new Rotation2d(backLeftModule.getSteerAngle())),
-                new SwerveModuleState(backRightModule.getDriveVelocity()*2.025, new Rotation2d(backRightModule.getSteerAngle()))
+                new SwerveModuleState(frontLeftModule.getDriveVelocity()*1.05, new Rotation2d(frontLeftModule.getSteerAngle())),
+                new SwerveModuleState(frontRightModule.getDriveVelocity()*1.05, new Rotation2d(frontRightModule.getSteerAngle())),
+                new SwerveModuleState(backLeftModule.getDriveVelocity()*1.05, new Rotation2d(backLeftModule.getSteerAngle())),
+                new SwerveModuleState(backRightModule.getDriveVelocity()*1.05, new Rotation2d(backRightModule.getSteerAngle()))
         );
     }
 
         public Pose2d getRealOdometry() {
                 double centerToWheel = Math.hypot(Constants.DRIVETRAIN_WHEELBASE_METERS / 2, Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
                 return new Pose2d(
-                                odometry.getPoseMeters().getX() - centerToWheel*Math.cos(Math.toDegrees(-135 + 90) + getRotation().getRadians()),
-                                odometry.getPoseMeters().getY() - centerToWheel*Math.sin(Math.toDegrees(-135 + 90) + getRotation().getRadians()),
+                                odometry.getPoseMeters().getTranslation().plus(new Translation2d(
+                                        0/*Constants.DRIVETRAIN_WHEELBASE_METERS / 2*/,
+                                        0/*Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2*/
+                                ).rotateBy(Rotation2d.fromDegrees(135 + getRotation().getDegrees())))/*odometry.getPoseMeters().getX() + centerToWheel*Math.sin(Math.toRadians(135) + getRotation().getRadians()),
+                                odometry.getPoseMeters().getY() + centerToWheel*Math.cos(Math.toRadians(135) + getRotation().getRadians())*/,
                                 getRotation()
                 );
         }

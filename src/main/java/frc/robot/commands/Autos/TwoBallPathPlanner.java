@@ -22,27 +22,15 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class fourBall extends SequentialCommandGroup {
+public class TwoBallPathPlanner extends SequentialCommandGroup {
 /** Creates a new fiveBall. */
 
 
-public fourBall(IntakeSubsystem intake, IndexerSubsystem indexer, SwerveDriveSubsystem drivetrain, 
+public TwoBallPathPlanner(IntakeSubsystem intake, IndexerSubsystem indexer, SwerveDriveSubsystem drivetrain, 
 ShooterSubsystem shooter, HoodSubsystem hood) {
-  
-  
-
   addCommands(
-    new threeBall(intake, indexer, drivetrain, shooter, hood),
-    new fourBall1(drivetrain).deadlineWith(
-      new DeployIntake(intake),
-      new BallInSpitter(indexer).withTimeout(0.5)),
-    new fourBall2(drivetrain).deadlineWith(
+    new TwoBallPathPlanner1(drivetrain).deadlineWith(
       new DeployIntake(intake)),
-    new WaitCommand(0.75).deadlineWith(
-      new DeployIntake(intake)),
-    new fourBall3(drivetrain).deadlineWith(
-      new DeployIntake(intake),
-      new StupidIndexer(indexer)), 
     new AutoShootCommand(hood, shooter, indexer)
   );
 }
