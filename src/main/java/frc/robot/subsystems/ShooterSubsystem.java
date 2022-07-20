@@ -143,7 +143,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean shooterReadyAuto(){
     if (shooterBottomTalon.getSelectedSensorVelocity() > shooterBottomTargetVelocity - 400
-        && shooterBottomTalon.getSelectedSensorVelocity() < shooterBottomTargetVelocity + 400 && (limelightAimReady() || DriverStation.isAutonomous())){
+        && shooterBottomTalon.getSelectedSensorVelocity() < shooterBottomTargetVelocity + 400 
+        && (limelightAimReady() || DriverStation.isAutonomous())){
           return true;
         }
     else {
@@ -158,7 +159,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean limelightAimReady(){
     limelightX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    if (limelightX < 2 && limelightX > -2){
+    if ((limelightX < 2 && limelightX > -2)){
       return true;
     }
     else {

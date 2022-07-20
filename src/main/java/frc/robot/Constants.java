@@ -21,22 +21,22 @@ public class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 42;
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2;
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 3;
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(264);
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(263.6);
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 6;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 4;
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(290);
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(290.3);
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7;
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 8;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(5.36);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(5.3);
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 11;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 12;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 10;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(342);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(342.6);
 
     ///////////////////
     //SHOOTER CONSTANTS
@@ -100,8 +100,8 @@ public class Constants {
             {-7.2, 9100},
             {-8,9361},
             {-8.5, 9900},
-            {-9.5, 10100},
-            {-10.1, 10300},
+            {-9.5, 10250},
+            {-10.1, 10500},
             {-11.1, 10300},
             {-12.5,10600},
             {-14, 10658},
@@ -126,11 +126,11 @@ public class Constants {
             {-7.2, 11900},
             {-8, 12880},
             {-8.5, 12300},
-            {-9.5, 12750},
-            {-10.1, 13300},
-            {-11.1,12202},
+            {-9.5, 12950},
+            {-10.1, 13500},
+            {-11.1, 13650},
             {-12.5, 13800},
-            {-14,14200 },
+            {-14.0, 14200 },
             {-14.9, 13785},
             {-15.1, 13802}
         };

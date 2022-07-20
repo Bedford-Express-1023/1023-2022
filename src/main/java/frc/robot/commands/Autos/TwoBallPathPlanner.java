@@ -13,6 +13,7 @@ import frc.robot.commands.Indexer.StupidIndexer;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Shooter.AutoShootCommand;
 import frc.robot.commands.Shooter.ShootAtTarmac;
+import frc.robot.commands.Indexer.StupidIndexer;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -26,12 +27,13 @@ public class TwoBallPathPlanner extends SequentialCommandGroup {
 /** Creates a new fiveBall. */
 
 
-public TwoBallPathPlanner(IntakeSubsystem intake, IndexerSubsystem indexer, SwerveDriveSubsystem drivetrain, 
+  public TwoBallPathPlanner(IntakeSubsystem intake, IndexerSubsystem indexer, SwerveDriveSubsystem drivetrain, 
 ShooterSubsystem shooter, HoodSubsystem hood) {
-  addCommands(
-    new TwoBallPathPlanner1(drivetrain).deadlineWith(
-      new DeployIntake(intake)),
-    new AutoShootCommand(hood, shooter, indexer)
-  );
-}
+    addCommands(
+      new TwoBallPathPlanner1(drivetrain).deadlineWith(
+        new DeployIntake(intake), 
+        new StupidIndexer(indexer)),
+      new AutoShootCommand(hood, shooter, indexer)
+    );
+  }
 }

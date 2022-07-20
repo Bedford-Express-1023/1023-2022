@@ -79,7 +79,7 @@ public class RobotContainer {
     private final ShooterTuningCommand shooterTuningCommand = new ShooterTuningCommand(m_shooter, m_hood);
     private final StupidIndexer stupidIndexer = new StupidIndexer(m_indexer);
     private final FeedShooter feedShooter = new FeedShooter(m_indexer);
-    private final XboxController brendanController = new XboxController(0);
+    private final XboxController willController = new XboxController(0);
     private final XboxController oliviaController = new XboxController(1);
     private final ShootAtFender shootAtFender = new ShootAtFender(m_shooter, m_hood, m_indexer);
     private final BallInSpitter ballInSpitter = new BallInSpitter(m_indexer);
@@ -125,12 +125,12 @@ public class RobotContainer {
 
         m_drivetrain.setDefaultCommand(new DriveCommand(
                 m_drivetrain,
-                () -> -modifyAxis(slewY.calculate(brendanController.getLeftY())), // Axes are flipped here on purpose
-                () -> -modifyAxis(slewX.calculate(brendanController.getLeftX())),
-                () -> -modifyAxis(brendanController.getRightX()),
-                () -> brendanController.getLeftBumper(), //RobotCentric
-                () -> brendanController.getRightBumper(), //lowPower
-                () -> !(brendanController.getLeftTriggerAxis() > 0.5) //slowTurn
+                () -> -modifyAxis(slewY.calculate(willController.getLeftY())), // Axes are flipped here on purpose
+                () -> -modifyAxis(slewX.calculate(willController.getLeftX())),
+                () -> -modifyAxis(willController.getRightX()),
+                () -> willController.getLeftBumper(), //RobotCentric
+                () -> willController.getRightBumper(), //lowPower
+                () -> !(willController.getLeftTriggerAxis() > 0.5) //slowTurn
         ));
         
         m_intake.setDefaultCommand(stowIntake);
@@ -140,7 +140,7 @@ public class RobotContainer {
        
        
       
-        new Button(brendanController::getBButtonPressed)
+        new Button(willController::getBButtonPressed)
                 .whenPressed(m_drivetrain::zeroGyroscope);
         new Button(oliviaController::getXButton)
                 .whileHeld(m_indexer::indexerUnjam);
@@ -167,20 +167,22 @@ public class RobotContainer {
         new Button(oliviaController::getStartButton)
                 .whenPressed(indexerStop);
 
-        new Button(() -> brendanController.getRightTriggerAxis() > 0.5)
+        new Button(() -> willController.getRightTriggerAxis() > 0.5)
                 .whileHeld(autoShootCommand);
                
-        new Button(() -> brendanController.getRightTriggerAxis() > 0.5)
+        new Button(() -> willController.getRightTriggerAxis() > 0.5)
                 .whileHeld(pointTowardsHub);
-        new Button(() -> brendanController.getLeftTriggerAxis() > 0.5)
+        new Button(() -> willController.getLeftTriggerAxis() > 0.5)
                 .whileHeld(feedShooter);
         /*new Button(brendanController::getAButton)
                 .whileHeld(deployIntake);*/
-        new Button(brendanController::getStartButton)
+        new Button(willController::getStartButton)
                 .whenPressed(hoodReturnToZero);
-        new POVButton(brendanController, 0)
+        new POVButton(willController, 0)
+        .whileHeld(shootAtFender);
+        new POVButton(willController, 270)
         .whileHeld(shootAtTarmac);
-        new POVButton(brendanController, 180)
+        new POVButton(willController, 180)
         .whileHeld(shootAtLaunchpad);
     }
 

@@ -164,5 +164,5 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                 backRightModule.set((feedForward.calculate(states[3].speedMetersPerSecond) + pid.calculate(states[3].speedMetersPerSecond)) * Math.min(Constants.SWERVE_SPEED_MULTIPLIER, 1), states[3].angle.getRadians()); 
         }
     }
-}
 //Eric Koenemann was here!
+}
