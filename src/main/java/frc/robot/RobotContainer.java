@@ -142,8 +142,8 @@ public class RobotContainer {
       
         new Button(brendanController::getBButtonPressed)
                 .whenPressed(m_drivetrain::zeroGyroscope);
-        new Button(oliviaController::getXButton)
-                .whileHeld(m_indexer::indexerUnjam);
+        new Button(brendanController::getXButton)
+                .whileHeld(deployIntake);
         new Button(oliviaController::getXButton)
                 .whileHeld(m_intake::unjamIntake);
         new Button(() -> oliviaController.getRightTriggerAxis() > 0.5)//not tested
